@@ -13,7 +13,7 @@ import tabulate
 # Define the function we are going to integrate and fit data to
 def f(x):
 	#define the function which you're going to fit the data to
-	f = math.sin(x)
+	f = math.exp(x)
 	return f
 
 # This function takes a continuous range of numbers and returns the same range as a discrete data
@@ -78,7 +78,7 @@ def TrapezoidalIntagral(N, a, b):
 
 # This function integrates the defined f(x) using direct integral of Scipy
 def DirectIntegral(a, b):
-	f = lambda x:math.sin(x)
+	f = lambda x:math.exp(x)
 	I = intg.quad(f,a,b)
 	return I[0]
 
@@ -103,16 +103,16 @@ def SimpsonIntegral(N, a, b, ):
 
 
 # gather all the data into a DataFrame
-Intg0 = DirectIntegral(0, math.pi)
-Intg1 = TrapezoidalIntagral(100000, 0, math.pi)
-Intg2 = MontecarloIntegral(100000, 0, math.pi, 10)
-Intg3 = SimpsonIntegral(100000, 0, math.pi)
+Intg0 = DirectIntegral(0, 10)
+Intg1 = TrapezoidalIntagral(100000, 0, 10)
+Intg2 = MontecarloIntegral(100000, 0, 10, 1)
+Intg3 = SimpsonIntegral(100000, 0, 10)
 
-df = pd.DataFrame([['sin(x)','0,pi','Direct Integral',Intg0,'---','---','1']
-					 ,['','','Trapezoidal Intagral',Intg1[0],round(abs(100*(Intg1[0]-Intg0)/Intg0),3),Intg1[1],'1']
-					 ,['','','Montecarlo Integral',Intg2[0],round(abs(100*(Intg2[0]-Intg0)/Intg0),3),Intg2[1],'10']
-					 ,['','','Simpson Integral',Intg3[0],round(abs(100*(Intg3[0]-Intg0)/Intg0),3),Intg3[1],'1']]
-				  ,columns=['Function','Range','Method','Result','Error%','Runtime(seconds)','Run(s)'])
+df = pd.DataFrame([['exp(x)','0,10','100000','Direct Integral',Intg0,'---','---','1']
+					 ,['','','','Trapezoidal Intagral',Intg1[0],round(abs(100*(Intg1[0]-Intg0)/Intg0),3),Intg1[1],'1']
+					 ,['','','','Montecarlo Integral',Intg2[0],round(abs(100*(Intg2[0]-Intg0)/Intg0),3),Intg2[1],'1']
+					 ,['','','','Simpson Integral',Intg3[0],round(abs(100*(Intg3[0]-Intg0)/Intg0),3),Intg3[1],'1']]
+				  ,columns=['Function','Range','N','Method','Result','Error%','Runtime(seconds)','Run(s)'])
 
 # print the DataFrame
 print(tabulate.tabulate(df, showindex=False, headers=df.columns,numalign="left"))
